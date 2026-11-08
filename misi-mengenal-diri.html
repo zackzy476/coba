@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MISI MENGENAL DIRI (Mode Kelas)</title>
+<style>
+/* ===== Warna & ukuran dasar ===== */
+:root{
+  --navy:#0B2A5B; --navy2:#123A7A; --navy3:#1B4A94;
+  --orange:#FF8A1F; --orange-d:#E06F00; --white:#fff; --ink:#0B2A5B; --sky:#E9F1FC;
+  --fs-body:clamp(1.05rem,1.6vw,1.5rem);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:"Trebuchet MS","Segoe UI",Verdana,system-ui,sans-serif;
+  font-size:var(--fs-body); line-height:1.45; color:var(--white);
+  background:var(--navy);
+  background-image:radial-gradient(circle at 90% 0,var(--navy3) 0,transparent 45%);
+  background-attachment:fixed;
+}
+[hidden]{display:none!important}
+.wrap{max-width:1280px;margin:0 auto;padding:clamp(12px,2.2vw,32px)}
+h1,h2,h3{margin:0;line-height:1.15}
+button,input,textarea{font:inherit}
+:focus-visible{outline:4px solid var(--orange);outline-offset:3px}
+
+/* ===== Tombol ===== */
+.btn{
+  min-height:56px;padding:12px 28px;border:0;border-radius:16px;cursor:pointer;
+  font-weight:800;font-size:clamp(1.1rem,1.7vw,1.6rem);
+  background:var(--orange);color:var(--navy);
+  box-shadow:0 5px 0 var(--orange-d);transition:transform .12s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--orange-d)}
+.btn.ghost{background:transparent;color:var(--white);border:3px solid var(--white);box-shadow:none}
+.btn.small{min-height:44px;padding:6px 16px;font-size:1rem}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+
+/* ===== Halaman pembuka ===== */
+.hero{display:grid;gap:24px;grid-template-columns:1.1fr .9fr;align-items:start}
+.hero h1{font-size:clamp(2.2rem,6vw,4.8rem);font-weight:900;letter-spacing:-.02em}
+.hero h1 small{display:block;font-size:.38em;color:var(--orange);font-weight:800;margin-top:10px}
+.how{margin:20px 0 0;padding-left:1.2em}
+.how li{margin:.4em 0}
+.card{background:var(--white);color:var(--ink);border-radius:24px;padding:clamp(16px,2.4vw,32px)}
+.card h2{font-size:clamp(1.3rem,2.2vw,2rem);margin-bottom:14px}
+.counts{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.count{width:64px;height:64px;border-radius:50%;border:3px solid var(--navy);background:var(--white);color:var(--navy);font-weight:900;font-size:1.6rem;cursor:pointer}
+.count[aria-pressed="true"]{background:var(--navy);color:var(--white)}
+.tnames{display:grid;gap:10px;margin-bottom:20px}
+.tname{display:flex;align-items:center;gap:12px}
+.tname .ic{font-size:2.2rem;width:56px;text-align:center}
+.tname input{flex:1;min-width:0;padding:12px 14px;border:3px solid var(--navy);border-radius:12px;color:var(--navy);font-weight:700}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+
+/* ===== Halaman soal ===== */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.prog{font-weight:800;font-size:1.2em}
+.bar{height:12px;border-radius:8px;background:var(--navy2);overflow:hidden;flex:1;min-width:120px}
+.bar i{display:block;height:100%;background:var(--orange);transition:width .4s}
+.timer{display:flex;align-items:center;gap:10px}
+.clock{min-width:120px;text-align:center;font-weight:900;font-size:1.8em;padding:4px 16px;border-radius:14px;background:var(--white);color:var(--navy)}
+.clock.warn{background:var(--orange)}
+.tmsg{font-size:.9em;color:#FFD8AD;min-height:1.4em;margin:0 0 8px}
+.qcard{background:var(--white);color:var(--ink);border-radius:24px;padding:clamp(16px,2.6vw,36px);margin-bottom:16px}
+.qtext{font-size:clamp(1.5rem,3.1vw,3rem);font-weight:900}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.opt{position:relative;display:flex;gap:14px;align-items:flex-start;padding:clamp(12px,1.8vw,24px);border-radius:20px;background:var(--navy2);border:4px solid var(--navy3);font-size:clamp(1.15rem,2.2vw,2.1rem);font-weight:700}
+.opt .L{flex:none;width:2.1em;height:2.1em;border-radius:50%;background:var(--orange);color:var(--navy);display:grid;place-items:center;font-weight:900}
+.opt .tag{display:none}
+.opt .who{display:block;font-size:.8em;margin-top:6px}
+.opt.best{background:var(--white);color:var(--ink);border-color:var(--orange);animation:pop .5s}
+.opt.best .tag{display:inline-block;background:var(--orange);color:var(--navy);border-radius:10px;padding:2px 12px;font-size:.6em;font-weight:900;margin-bottom:6px}
+.opt.dim{opacity:.6}
+@keyframes pop{50%{transform:scale(1.025)}}
+.teams{display:grid;gap:10px;margin-bottom:16px}
+.team{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--navy2);border-radius:18px;padding:10px 16px}
+.team .ic{font-size:2.2rem}
+.team .tn{font-weight:800;font-size:1.25em;flex:1;min-width:120px;overflow-wrap:anywhere}
+.team .sc{font-weight:900;min-width:90px;text-align:right}
+.picks{display:flex;gap:8px}
+.pk{width:60px;height:56px;border-radius:14px;border:3px solid var(--white);background:transparent;color:var(--white);font-weight:900;font-size:1.5rem;cursor:pointer}
+.pk[aria-pressed="true"]{background:var(--orange);color:var(--navy);border-color:var(--orange)}
+.pk:disabled{cursor:default}
+.fb{background:var(--sky);color:var(--ink);border-radius:24px;padding:clamp(16px,2.4vw,30px);margin-bottom:16px;border-left:12px solid var(--orange)}
+.fb h3{font-size:clamp(1.3rem,2.2vw,2rem);margin-bottom:8px}
+.fb ul{margin:12px 0 0;padding-left:1.2em}
+.actions{display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap}
+
+/* ===== Halaman akhir ===== */
+.end h1{font-size:clamp(2rem,5vw,4rem);font-weight:900;margin-bottom:16px}
+.board{display:grid;gap:12px;margin:18px 0}
+.brow{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center}
+.brow .ic{font-size:2.4rem}
+.brow .meter{height:26px;background:var(--sky);border-radius:14px;overflow:hidden}
+.brow .meter i{display:block;height:100%;background:var(--orange);border-radius:14px}
+.brow b{font-size:1.4em}
+.brow .nm{grid-column:1/-1;margin-top:-8px;font-weight:800}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.refl{background:var(--navy2);border-radius:24px;padding:clamp(16px,2.4vw,30px);border:3px dashed var(--orange)}
+.refl h3{color:var(--orange);margin-bottom:8px}
+
+/* ===== Responsif (HP & tablet) ===== */
+@media(max-width:820px){
+  .hero,.two,.opts{grid-template-columns:1fr}
+  .team .sc{text-align:left}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ===== 1. HALAMAN PEMBUKA ===== -->
+<main id="s-start">
+  <div class="hero">
+    <div>
+      <h1>MISI MENGENAL DIRI<small>Mode Kelas • Mengenali dan mengelola emosi</small></h1>
+      <ol class="how">
+        <li>Bentuk tim, lalu bacakan soal bersama.</li>
+        <li>Diskusikan 30 detik, lalu guru memilih huruf jawaban tiap tim.</li>
+        <li>Tekan <b>Buka Jawaban</b> dan simak pilihan yang paling menolong.</li>
+        <li>Tim yang memilih paling tepat mendapat 10 poin. Semua tim tetap hebat!</li>
+      </ol>
+      <p style="margin-top:18px">Permainan ini untuk belajar bersama, bukan tes atau penilaian diri.</p>
+    </div>
+    <div class="card">
+      <h2 id="cnt-h">Berapa tim yang bermain?</h2>
+      <div class="counts" id="counts" role="group" aria-labelledby="cnt-h"></div>
+      <h2>Nama tim (boleh diubah)</h2>
+      <div class="tnames" id="tnames"></div>
+      <div class="row">
+        <button class="btn" id="btn-start">Mulai Misi</button>
+        <button class="btn ghost" style="color:var(--navy);border-color:var(--navy)" data-fs>Layar Penuh</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ===== 2. HALAMAN SOAL ===== -->
+<main id="s-quiz" hidden>
+  <div class="top">
+    <span class="prog" id="prog"></span>
+    <div class="bar" aria-hidden="true"><i id="barfill"></i></div>
+    <div class="timer">
+      <div class="clock" id="clock" role="timer" aria-label="Waktu diskusi">0:30</div>
+      <button class="btn small ghost" id="btn-reset">Ulang waktu</button>
+      <button class="btn small ghost" data-fs>Layar Penuh</button>
+    </div>
+  </div>
+  <p class="tmsg" id="tmsg"></p>
+  <div class="qcard"><div class="qtext" id="qtext"></div></div>
+  <div class="opts" id="opts"></div>
+  <div class="teams" id="teams"></div>
+  <div class="fb" id="fb" hidden tabindex="-1"></div>
+  <div class="actions">
+    <button class="btn" id="btn-reveal">Buka Jawaban</button>
+    <button class="btn" id="btn-next" hidden>Soal Berikutnya</button>
+  </div>
+</main>
+
+<!-- ===== 3. HALAMAN AKHIR ===== -->
+<main id="s-end" class="end" hidden>
+  <h1 tabindex="-1" id="end-h">Misi selesai! Terima kasih, semuanya!</h1>
+  <div class="card">
+    <h2>Papan skor</h2>
+    <div class="board" id="board"></div>
+    <p id="thanks"></p>
+  </div>
+  <div class="two">
+    <div class="refl">
+      <h3>Pesan untuk kita semua</h3>
+      <p>Setiap emosi punya pesan. Dengan mengenalinya, kamu bisa memilih cara yang menolong dirimu dan orang lain. Terus berlatih, kamu sudah di jalur yang baik.</p>
+    </div>
+    <div class="refl">
+      <h3>Refleksi (boleh dijawab, boleh disimpan sendiri)</h3>
+      <p>Emosi apa yang paling sering kamu rasakan minggu ini, dan satu cara sehat apa yang ingin kamu coba?</p>
+    </div>
+  </div>
+  <div class="actions" style="margin-top:20px">
+    <button class="btn" id="btn-again">Main Lagi</button>
+  </div>
+</main>
+
+</div>
+
+<script>
+/* ===== Bank soal: q=soal, o=4 opsi, a=indeks jawaban paling menolong, f=umpan balik ===== */
+const QS = [
+ {q:"Sebelum presentasi, perutmu mulas, tangan dingin, dan jantung berdebar. Emosi apa yang paling mungkin kamu rasakan?",
+  o:["Gembira berlebihan","Bosan","Cemas atau gugup","Bangga"],a:2,
+  f:"Tubuh sering memberi tanda lebih dulu. Mengenali rasa gugup membuat kita bisa menenangkannya, misalnya dengan menarik napas pelan."},
+ {q:"Manakah pernyataan yang paling tepat tentang emosi?",
+  o:["Marah dan sedih sebaiknya dilarang","Semua emosi itu wajar; kita yang memilih cara mengungkapkannya","Hanya anak kecil yang boleh menangis","Emosi sebaiknya selalu disembunyikan"],a:1,
+  f:"Merasa marah, sedih, atau takut itu manusiawi. Yang bisa kita latih adalah cara mengungkapkannya dengan aman dan sopan."},
+ {q:"Nilai ulanganmu lebih rendah dari harapan dan kamu kecewa. Apa yang paling menolong?",
+  o:["Menyalahkan guru","Merobek kertas ulangan","Pura-pura tidak peduli","Mengakui rasa kecewa, lalu bertanya pada guru bagian mana yang bisa diperbaiki"],a:3,
+  f:"Rasa kecewa boleh hadir. Setelah itu, bertanya membantu kita belajar dan kecewa pun perlahan mereda."},
+ {q:"Kamu sangat marah pada temanmu. Apa langkah pertama yang paling menolong?",
+  o:["Menarik napas pelan beberapa kali dan memberi jeda sebelum bicara","Berteriak sekeras-kerasnya","Memukul meja","Menyindir lewat media sosial"],a:0,
+  f:"Jeda singkat memberi otak waktu tenang, sehingga kita bisa bicara dengan kepala dingin dan tidak menyesal kemudian."},
+ {q:"Sahabatmu pindah sekolah dan kamu merasa sedih dan sepi. Apa yang paling menolong?",
+  o:["Menyimpan sendiri dan menjauh dari semua orang","Berpura-pura baik-baik saja terus","Menceritakan perasaan pada orang tepercaya dan tetap menjaga kontak dengan sahabat","Marah pada semua orang"],a:2,
+  f:"Berbagi cerita meringankan hati, dan persahabatan tetap bisa terjaga lewat pesan, telepon, atau video."},
+ {q:"Kamu sulit tidur karena khawatir menghadapi ujian. Apa yang paling menolong?",
+  o:["Begadang semalaman","Menulis hal yang dikhawatirkan, membuat rencana belajar kecil, dan beristirahat cukup","Tidak usah belajar sama sekali","Mengurung diri di kamar"],a:1,
+  f:"Menuliskan kekhawatiran membuatnya lebih jelas dan lebih kecil. Rencana kecil dan tidur cukup juga membantu otak bekerja baik."},
+ {q:"Kamu merasa iri karena temanmu mendapat penghargaan. Apa yang paling menolong?",
+  o:["Menjelekkan temanmu","Menjauhi temanmu","Berhenti dari hobimu","Mengakui rasa iri, mengucapkan selamat, lalu fokus pada kemajuan diri sendiri"],a:3,
+  f:"Iri adalah tanda bahwa kita juga punya keinginan. Kita bisa mengubahnya menjadi semangat untuk berkembang."},
+ {q:"Mengapa mengenali emosi sebelum bereaksi itu bermanfaat?",
+  o:["Kita punya waktu untuk memilih respons yang tepat","Supaya emosi hilang selamanya","Supaya orang lain tidak pernah tahu perasaan kita","Supaya kita tidak perlu bicara dengan siapa pun"],a:0,
+  f:"Saat sudah menamai emosi, misalnya \"aku kesal\", kita lebih mudah memilih tindakan yang menolong."},
+ {q:"Temanmu bercerita bahwa ia sedang sedih. Apa yang paling menolong?",
+  o:["Menyuruhnya segera berhenti menangis","Menertawakan ceritanya","Mendengarkan dengan tenang dan berkata, \"Aku di sini untukmu\"","Cepat-cepat mengganti topik"],a:2,
+  f:"Didengarkan tanpa dihakimi sudah sangat menguatkan. Kita juga boleh mengajaknya bicara dengan guru BK bila perlu."},
+ {q:"Perasaan yang berat terus kamu rasakan beberapa hari. Apa yang paling menolong?",
+  o:["Dipendam sendiri","Dilampiaskan dengan berkelahi","Ditunggu hilang sendiri tanpa cerita","Bercerita pada orang dewasa tepercaya, seperti orang tua, wali kelas, atau guru BK"],a:3,
+  f:"Meminta bantuan adalah tanda kekuatan. Kamu tidak harus menghadapi perasaan berat sendirian."}
+];
+const ICONS = [["🦁","Singa"],["🐯","Harimau"],["🐼","Panda"],["🦊","Rubah"],["🐬","Lumba-lumba"]];
+const LET = ["A","B","C","D"];
+const TIME = 30;
+
+/* ===== Status permainan ===== */
+let N = 3, custom = [], teams = [], qi = 0, revealed = false, left = TIME, tick = null;
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const defName = i => N === 1 ? "Seluruh Kelas" : "Tim " + ICONS[i][1];
+
+/* Tampilkan satu halaman saja */
+function show(id){
+  ["s-start","s-quiz","s-end"].forEach(s => $(s).hidden = (s !== id));
+  window.scrollTo(0,0);
+}
+
+/* ===== Halaman pembuka ===== */
+function renderSetup(){
+  $("counts").innerHTML = [1,2,3,4,5].map(n =>
+    `<button class="count" data-n="${n}" aria-pressed="${n===N}" aria-label="${n===1?'1 tim (seluruh kelas)':n+' tim'}">${n}</button>`).join("");
+  $("tnames").innerHTML = Array.from({length:N},(_,i) =>
+    `<label class="tname"><span class="ic" aria-hidden="true">${ICONS[i][0]}</span>
+     <input type="text" maxlength="24" data-i="${i}" value="${esc(custom[i] ?? defName(i))}" aria-label="Nama tim ${i+1}"></label>`).join("");
+}
+$("counts").addEventListener("click", e => {
+  const b = e.target.closest(".count"); if(!b) return;
+  N = +b.dataset.n; renderSetup();
+});
+$("tnames").addEventListener("input", e => { custom[+e.target.dataset.i] = e.target.value; });
+$("btn-start").onclick = () => {
+  teams = Array.from({length:N},(_,i) => ({
+    name:(custom[i]||"").trim() || defName(i), icon:ICONS[i][0], score:0, pick:null, got:false}));
+  qi = 0; renderQ(); show("s-quiz");
+};
+
+/* ===== Layar penuh ===== */
+document.querySelectorAll("[data-fs]").forEach(b => b.onclick = () => {
+  try{
+    if(document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen();
+  }catch(err){}
+});
+
+/* ===== Pengatur waktu (pengingat saja, tidak memaksa) ===== */
+function drawClock(){
+  const c = $("clock");
+  c.textContent = Math.floor(left/60) + ":" + String(left%60).padStart(2,"0");
+  c.classList.toggle("warn", left <= 10 && left > 0);
+  $("tmsg").textContent = left === 0 ? "Waktu diskusi selesai. Lanjut kapan pun tim siap, tidak perlu terburu-buru." : "";
+}
+function startTimer(){
+  clearInterval(tick); left = TIME; drawClock();
+  tick = setInterval(() => { if(left > 0){ left--; drawClock(); } else clearInterval(tick); }, 1000);
+}
+$("btn-reset").onclick = startTimer;
+
+/* ===== Halaman soal ===== */
+function renderQ(){
+  const Q = QS[qi]; revealed = false;
+  teams.forEach(t => { t.pick = null; t.got = false; });
+  $("prog").textContent = "Soal " + (qi+1) + " dari " + QS.length;
+  $("barfill").style.width = (qi/QS.length*100) + "%";
+  $("qtext").textContent = Q.q;
+  $("opts").innerHTML = Q.o.map((t,k) =>
+    `<div class="opt" id="opt${k}"><span class="L">${LET[k]}</span><span><span class="tag">Pilihan paling menolong</span><span class="txt">${esc(t)}</span><span class="who"></span></span></div>`).join("");
+  drawTeams();
+  $("fb").hidden = true;
+  $("btn-reveal").hidden = false; $("btn-next").hidden = true;
+  $("btn-next").textContent = qi === QS.length-1 ? "Lihat Hasil" : "Soal Berikutnya";
+  startTimer();
+}
+function drawTeams(){
+  $("teams").innerHTML = teams.map((t,i) =>
+    `<div class="team"><span class="ic" aria-hidden="true">${t.icon}</span><span class="tn">${esc(t.name)}</span>
+     <div class="picks" role="group" aria-label="Jawaban ${esc(t.name)}">${LET.map((L,k) =>
+       `<button class="pk" data-t="${i}" data-k="${k}" aria-pressed="${t.pick===k}" ${revealed?"disabled":""} aria-label="Pilih ${L} untuk ${esc(t.name)}">${L}</button>`).join("")}</div>
+     <span class="sc">${t.score} poin</span></div>`).join("");
+}
+/* Guru menekan huruf A-D untuk tiap tim (tekan lagi untuk membatalkan) */
+$("teams").addEventListener("click", e => {
+  const b = e.target.closest(".pk"); if(!b || revealed) return;
+  const t = teams[+b.dataset.t], k = +b.dataset.k;
+  t.pick = (t.pick === k) ? null : k;
+  const keep = `.pk[data-t="${b.dataset.t}"][data-k="${k}"]`;
+  drawTeams(); const nb = document.querySelector(keep); if(nb) nb.focus();
+});
+/* Buka jawaban: tandai pilihan terbaik, beri poin, tampilkan umpan balik hangat */
+$("btn-reveal").onclick = () => {
+  const Q = QS[qi]; revealed = true; clearInterval(tick);
+  teams.forEach(t => { t.got = (t.pick === Q.a); if(t.got) t.score += 10; });
+  Q.o.forEach((_,k) => {
+    const el = $("opt"+k);
+    el.classList.add(k === Q.a ? "best" : "dim");
+    el.querySelector(".who").textContent = teams.filter(t => t.pick === k).map(t => t.icon + " " + t.name).join("  ");
+  });
+  drawTeams();
+  const lines = teams.map(t => t.got
+    ? `<li>${t.icon} <b>${esc(t.name)}</b>: pilihan yang sangat menolong! +10 poin. Hebat!</li>`
+    : `<li>${t.icon} <b>${esc(t.name)}</b>: terima kasih sudah mencoba dan berdiskusi. Pilihan ${LET[Q.a]} bisa jadi cara baru untuk dicoba.</li>`).join("");
+  $("fb").innerHTML = `<h3>Pilihan yang paling menolong: ${LET[Q.a]}</h3><p>${esc(Q.f)}</p><ul>${lines}</ul>`;
+  $("fb").hidden = false; $("fb").focus();
+  $("btn-reveal").hidden = true; $("btn-next").hidden = false;
+};
+$("btn-next").onclick = () => { if(qi < QS.length-1){ qi++; renderQ(); window.scrollTo(0,0); } else renderEnd(); };
+
+/* ===== Halaman akhir ===== */
+function renderEnd(){
+  show("s-end");
+  $("board").innerHTML = [...teams].sort((a,b) => b.score - a.score).map(t =>
+    `<div class="brow"><span class="ic" aria-hidden="true">${t.icon}</span>
+     <div class="meter" role="img" aria-label="${esc(t.name)}: ${t.score} poin"><i style="width:${t.score/(QS.length*10)*100}%"></i></div>
+     <b>${t.score}</b><span class="nm">${esc(t.name)}</span></div>`).join("");
+  $("thanks").innerHTML = teams.length === 1
+    ? "Terima kasih, " + esc(teams[0].name) + "! Kalian sudah berani mengenali dan membicarakan perasaan bersama."
+    : "Terima kasih untuk " + teams.map(t => t.icon + " " + esc(t.name)).join(", ") + "! Setiap tim sudah berani berpikir dan berbagi. Semua tim hebat hari ini.";
+  $("end-h").focus();
+}
+$("btn-again").onclick = () => { renderSetup(); show("s-start"); };
+
+/* Mulai */
+renderSetup();
+</script>
+</body>
+</html>
